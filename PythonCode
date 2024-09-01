@@ -1,41 +1,29 @@
-Below process talks about how data is loaded for data profiling and is focused on data quality, reliability, accuracy, consistency, and identifying any gaps along with suggestions for fixing them, here’s how you can approach it using  
-
-### Step 1: *Data Profiling with a Focus on Quality, Reliability, Accuracy, and Consistency*
-
-1. *Load the Data:*
-   
+Below process explains about how data is loaded for data profiling and is focused on data quality, reliability, accuracy, consistency, and identifying any gaps along with suggestions for fixing them,  
+Step 1: Data Profiling with a Focus on Quality, Reliability, Accuracy, and Consistency
+1. Load the Data:
    import pandas as pd
-
-
-
 # Load datasets
 Data_customer = pd.read_csv('customers.csv')
 Data_order = pd.read_csv('orders.csv')
 data_shipping = pd.read_csv('shipping.csv')
-
 
    # Load the data into DataFrames
    df_customer = pd.DataFrame(data_customer)
    df_order = pd.DataFrame(data_order)
    df_shipping = pd.DataFrame(data_shipping)
    
-
-2. *Check for Missing Values (Nulls):*
+2. Check for Missing Values (Nulls):
    Identifying missing values is crucial to assess data quality and completeness.
-
- 
-   # Check for missing values
+# Check for missing values
    print("Missing values in Customer data:")
    print(df_customer.isnull().sum())
-
    print("\nMissing values in Order data:")
    print(df_order.isnull().sum())
-
    print("\nMissing values in Shipping data:")
    print(df_shipping.isnull().sum())
    
 
-3. *Check for Duplicates:*
+3. Check for Duplicates:
    Duplicate records can affect the reliability and accuracy of analysis.
  
    # Check for duplicates
@@ -44,7 +32,7 @@ data_shipping = pd.read_csv('shipping.csv')
    print("Duplicate records in Shipping data:", df_shipping.duplicated().sum())
    
 
-4. *Check for Consistency in Data Relationships:*
+4. Check for Consistency in Data Relationships:
    This involves ensuring that keys match across related tables.
 
    
@@ -57,7 +45,7 @@ data_shipping = pd.read_csv('shipping.csv')
    print("Shippings with invalid Customer_IDs:", df_shipping[~customer_ids_in_shipping])
    
 
-5. *Data Quality Metrics:*
+5. Data Quality Metrics:
    You can calculate simple metrics such as:
    - Percentage of missing values
    - Ratio of invalid relationships (e.g., orders without corresponding customers)
@@ -85,9 +73,9 @@ data_shipping = pd.read_csv('shipping.csv')
    print(f"Percentage of invalid Customer_IDs in Shipping data: {invalid_shipping_ratio:.2f}%")
    
 
-### Step 2: *Assessing Reliability, Accuracy, and Consistency*
+ Step 2: Assessing Reliability, Accuracy, and Consistency
 
-1. *Reliability and Accuracy:*
+1. Reliability and Accuracy:
    Reliability can be assessed by looking at the data entry errors, outliers, and potential mismatches.
 
  
@@ -100,7 +88,7 @@ data_shipping = pd.read_csv('shipping.csv')
    print(df_customer[df_customer['First'].str.contains(r'[!@#$%^&*(),.?":{}|<>]')])
    
 
-2. *Consistency of Data:*
+2. Consistency of Data:
    Check whether data is consistently formatted and logically sound.
 
  
@@ -113,49 +101,35 @@ data_shipping = pd.read_csv('shipping.csv')
    print(df_shipping[~df_shipping['Status'].str.match("Pending")])
    
 
-### Step 3: *Identifying Gaps and Fixing Them*
+ Step 3: Identifying Gaps and Fixing Them
 
 Based on the checks, you can identify potential gaps and suggest fixes:
 
-1. *Fixing Missing Data:*
-   - *Approach:* Depending on the significance, you can fill missing values with defaults, averages, or drop the records if they are irrelevant.
-   - 
-    
+1. Fixing Missing Data:
+   - Approach: Depending on the significance, you can fill missing values with defaults, averages, or drop the records if they are irrelevant.
      # Fill missing names with a placeholder
      df_customer['First'].fillna('Unknown', inplace=True)
+2. Fixing Duplicates:
+   - Approach: Remove duplicate rows to ensure each entity is uniquely represented.
+ df_customer.drop_duplicates(inplace=True)
      
 
-2. *Fixing Duplicates:*
-   - *Approach:* Remove duplicate rows to ensure each entity is uniquely represented.
-   - *Example:*
-     python
-     df_customer.drop_duplicates(inplace=True)
-     
-
-3. *Fixing Inconsistent IDs:*
-   - *Approach:* Align IDs across datasets or flag invalid entries for review.
-   - *Example:*
-   
+3. Fixing Inconsistent IDs:
+   - Approach: Align IDs across datasets or flag invalid entries for review.
      # Remove orders with invalid Customer_IDs
      df_order_cleaned = df_order[customer_ids_in_orders]
      
 
-4. *Fixing Data Entry Errors:*
-   - *Approach:* Correct obvious typos, normalize inconsistent entries, or flag for manual review.
-   -  
-   
+4. Fixing Data Entry Errors:
+   - Approach: Correct obvious typos, normalize inconsistent entries, or flag for manual review.
      # Replace special characters in names
      df_customer['First'] = df_customer['First'].str.replace(r'[!@#$%^&*(),.?":{}|<>]', '', regex=True)
      
 
-### Step 4: *Generate a Report on Data Quality*
-
+ Step 4: *Generate a Report on Data Quality*
 Finally, summarize your findings and corrections in a report format:
-
- 
 report = f"""
 Data Quality Report:
-
 1. Missing Values:
 - Customer Data: {missing_customer_values[missing_customer_values > 0].to_dict()}
 - Order Data: {missing_order_values[missing_order_values > 0].to_dict()}
@@ -180,6 +154,4 @@ Recommendations:
 
 print(report)
 
-This approach allows you to systematically profile your data, assess its quality, reliability, accuracy, and consistency, and identify any gaps or errors. 
-It also provides you with a framework for suggesting fixes and summarizing your findings in a comprehensive report. 
-This process ensures that your data is clean, reliable, and ready for further analysis or reporting.
+
